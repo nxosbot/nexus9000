@@ -1,0 +1,65 @@
+[NxosMode]
+type = "NxosRestInput"
+#url = "172.31.205.249"
+url = "172.31.200.171"
+ticker_interval = 5
+username = "admin"
+password = "insieme"
+dn = "sys/intf/phys-[eth1/1]"
+mo = "l1PhysIf"
+prop = "mode"
+
+[NxosNameX]
+type = "NxosRestInput"
+url = "172.31.150.106" # seoul11
+ticker_interval = 3
+username = "admin"
+password = "insieme"
+dn = "sys"
+mo = "topSystem"
+#prop = "name"
+
+[NxosName]
+type = "NxosRestInput"
+#url = "172.31.205.249"
+url = "172.31.200.171"
+ticker_interval = 3
+username = "admin"
+password = "insieme"
+dn = "sys"
+mo = "topSystem"
+prop = "name"
+
+[NxosNxapiInput]
+#url = "172.31.205.249"
+url = "172.31.200.171" # cal6
+ticker_interval = 2
+username = "admin"
+password = "insieme"
+command = "show system mode"
+prop = "system_mode"
+
+#[NxosRestEncoder]
+#type = "PayloadEncoder"
+#append_newlines = true
+
+[PayloadEncoder]
+type = "PayloadEncoder"
+append_newlines = true
+
+[HttpOutput]
+http_timeout = 10
+#message_matcher = "Type == 'heka.nxosrest'" #&& Logger == '172.31.200.171'"
+message_matcher = "Type == 'heka.nxapi.system_mode'"
+encoder = "PayloadEncoder"
+#encoder = "NxosRestEncoder"
+address = "http://172.31.203.247:60001/hekain/mmode"
+#address = "http://192.168.2.50:50000/hekain/mmode"
+method = "POST"
+username = "admin"
+password = "insieme"
+
+[LogOutput]
+message_matcher = "TRUE"
+encoder = "PayloadEncoder"
+
